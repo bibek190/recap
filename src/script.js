@@ -1,15 +1,25 @@
 import gsap from "gsap";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import GUI from "lil-gui";
 
 const canvas = document.querySelector(".webgl");
 
+const gui = new GUI();
+
 const scene = new THREE.Scene();
+
+const textureLoader = new THREE.TextureLoader();
+const doorTexture = textureLoader.load("/door.jpg");
+doorTexture.colorSpace = THREE.SRGBColorSpace;
+console.log(doorTexture);
+
+const debugObject = {};
+debugObject.color = 0xff0000;
 
 const geometry = new THREE.SphereGeometry(1, 16, 16);
 const material = new THREE.MeshBasicMaterial({
-  color: 0xff0000,
-  wireframe: true,
+  map: doorTexture,
 });
 
 const mesh = new THREE.Mesh(geometry, material);
@@ -54,6 +64,13 @@ const cursor = {
 //
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+
+// gui.add(mesh.position, "y").min(0).max(1).step(0.01);
+// gui.add(mesh.position, "x").min(0).max(1).step(0.01);
+// gui.add(material, "wireframe");
+// gui.addColor(debugObject, "color").onChange(() => {
+//   material.color.set(debugObject.color);
+// });
 
 const clock = new THREE.Clock();
 
